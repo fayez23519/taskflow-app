@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TaskFlow — a polished bilingual task manager with authentication, categories, filters, and progress tracking.">
+    <title>TaskFlow — Professional Task Manager</title>
+
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- Google Fonts: Cairo (Arabic) + Inter (Latin) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <header class="topbar">
+        <div class="brand">
+            <img src="icon.svg" alt="" class="brand-logo">
+            <span class="brand-name">TaskFlow</span>
+        </div>
+        <div class="topbar-actions">
+            <button id="lang-btn" type="button" class="icon-btn" aria-label="Toggle language">
+                <i class="fa-solid fa-language"></i>
+                <span id="lang-label">AR</span>
+            </button>
+            <button id="theme-btn" type="button" class="icon-btn" aria-label="Toggle dark mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- ========== AUTH VIEW ========== -->
+        <section id="auth-view" class="auth-shell">
+            <div class="auth-hero">
+                <p class="eyebrow" data-i18n="hero.eyebrow">Frontend Portfolio Project</p>
+                <h1><span data-i18n="hero.title">Organize your day with</span> <span class="accent">TaskFlow</span></h1>
+                <p class="hero-lead" data-i18n="hero.lead">A polished productivity app with authentication, search, filters, categories, and real-time progress tracking — built with vanilla HTML, CSS &amp; JavaScript.</p>
+                <ul class="hero-features">
+                    <li><i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="feat.search">Instant search</span></li>
+                    <li><i class="fa-solid fa-filter"></i> <span data-i18n="feat.filter">Smart filters</span></li>
+                    <li><i class="fa-solid fa-tags"></i> <span data-i18n="feat.cat">Categories</span></li>
+                    <li><i class="fa-solid fa-chart-line"></i> <span data-i18n="feat.progress">Live progress</span></li>
+                </ul>
+            </div>
+
+            <div class="auth-card">
+                <div class="auth-tabs" role="tablist">
+                    <button id="show-login" class="auth-tab active" type="button" role="tab" aria-selected="true">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span data-i18n="auth.login">Login</span>
+                    </button>
+                    <button id="show-signup" class="auth-tab" type="button" role="tab" aria-selected="false">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span data-i18n="auth.signup">Sign Up</span>
+                    </button>
+                </div>
+
+                <!-- LOGIN FORM -->
+                <form id="login-form" class="auth-form" novalidate>
+                    <h2 data-i18n="auth.loginTitle">Welcome back</h2>
+                    <p class="auth-sub" data-i18n="auth.loginSub">Sign in to access your personal task board.</p>
+
+                    <div class="field">
+                        <label for="login-email" data-i18n="auth.email">Email</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                            <input type="email" id="login-email" autocomplete="email" required>
+                        </div>
+                        <small class="field-error" data-for="login-email"></small>
+                    </div>
+
+                    <div class="field">
+                        <label for="login-password" data-i18n="auth.password">Password</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="login-password" autocomplete="current-password" required minlength="6">
+                            <button type="button" class="toggle-eye" data-target="login-password" aria-label="Show password">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                        <small class="field-error" data-for="login-password"></small>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span data-i18n="auth.loginBtn">Sign in</span>
+                    </button>
+                </form>
+
+                <!-- SIGNUP FORM -->
+                <form id="signup-form" class="auth-form hidden" novalidate>
+                    <h2 data-i18n="auth.signupTitle">Create your account</h2>
+                    <p class="auth-sub" data-i18n="auth.signupSub">Start organizing tasks in seconds.</p>
+
+                    <div class="field">
+                        <label for="signup-email" data-i18n="auth.email">Email</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                            <input type="email" id="signup-email" autocomplete="email" required>
+                        </div>
+                        <small class="field-error" data-for="signup-email"></small>
+                    </div>
+
+                    <div class="field">
+                        <label for="signup-password" data-i18n="auth.password">Password</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="signup-password" autocomplete="new-password" required minlength="6">
+                            <button type="button" class="toggle-eye" data-target="signup-password" aria-label="Show password">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="strength" aria-hidden="true"><span id="strength-bar"></span></div>
+                        <small class="field-hint" data-i18n="auth.pwHint">Use at least 6 characters, mix letters &amp; numbers.</small>
+                        <small class="field-error" data-for="signup-password"></small>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span data-i18n="auth.signupBtn">Create account</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ========== TODO VIEW ========== -->
+        <section id="todo-view" class="hidden">
+            <div class="user-bar">
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div>
+                        <small data-i18n="app.signedInAs">Signed in as</small>
+                        <strong id="user-name">user</strong>
+                    </div>
+                </div>
+                <button id="logout-btn" type="button" class="btn-ghost">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span data-i18n="app.logout">Logout</span>
+                </button>
+            </div>
+
+            <div class="add-row">
+                <div class="input-wrap grow">
+                    <i class="fa-solid fa-plus input-icon"></i>
+                    <input type="text" id="input-box" data-i18n-ph="app.addPh" placeholder="Add your task" maxlength="120">
+                </div>
+                <select id="category-select" aria-label="Task category">
+                    <option value="general" data-i18n="cat.general">General</option>
+                    <option value="programming" data-i18n="cat.programming">Programming</option>
+                    <option value="study" data-i18n="cat.study">Study</option>
+                    <option value="work" data-i18n="cat.work">Work</option>
+                    <option value="personal" data-i18n="cat.personal">Personal</option>
+                </select>
+                <button id="btn" type="button" class="btn-primary">
+                    <i class="fa-solid fa-plus"></i>
+                    <span data-i18n="app.add">Add</span>
+                </button>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-list-check"></i></div>
+                    <div>
+                        <span id="total-count">0</span>
+                        <small data-i18n="stats.total">Total</small>
+                    </div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div>
+                        <span id="completed-count">0</span>
+                        <small data-i18n="stats.done">Completed</small>
+                    </div>
+                </div>
+                <div class="stat-card warn">
+                    <div class="stat-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                    <div>
+                        <span id="remaining-count">0</span>
+                        <small data-i18n="stats.left">Remaining</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-wrap" aria-label="progress">
+                <div class="progress-bar"><span id="progress-fill"></span></div>
+                <small><span id="progress-pct">0%</span> <span data-i18n="stats.completeSuffix">complete</span></small>
+            </div>
+
+            <div class="toolbar">
+                <div class="input-wrap grow">
+                    <i class="fa-solid fa-magnifying-glass input-icon"></i>
+                    <input type="text" id="search-box" data-i18n-ph="app.searchPh" placeholder="Search tasks">
+                </div>
+                <select id="filter-select">
+                    <option value="all" data-i18n="filter.all">All tasks</option>
+                    <option value="completed" data-i18n="filter.done">Completed</option>
+                    <option value="pending" data-i18n="filter.pending">Pending</option>
+                </select>
+                <select id="sort-select">
+                    <option value="newest" data-i18n="sort.new">Newest first</option>
+                    <option value="oldest" data-i18n="sort.old">Oldest first</option>
+                </select>
+                <button id="clear-btn" type="button" class="btn-danger">
+                    <i class="fa-solid fa-trash"></i>
+                    <span data-i18n="app.clearAll">Delete All</span>
+                </button>
+            </div>
+
+            <ul id="iist" class="task-list"></ul>
+        </section>
+    </main>
+
+ <footer class="footer">
+    <span data-i18n="footer.copy">© {year} TaskFlow — All rights reserved.</span>
+</footer>
+
+    <script src="i18n.js"></script>
+    <script src="utils.js"></script>
+    <script src="elements.js"></script>
+    <script src="tasks.js"></script>
+    <script src="auth.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
